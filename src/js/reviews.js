@@ -204,34 +204,41 @@ class ReviewManager {
         const container = document.getElementById('reviewsList');
         const reviews = Array.from(this.reviews.values());
 
-        // Применяем фильтрацию
-        switch (this.currentFilter) {
-            case FILTER_TYPES.DATE:
-                reviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-                break;
-            case FILTER_TYPES.RATING:
-                reviews.sort((a, b) => (b.likes?.count || 0) - (a.likes?.count || 0));
-                break;
-            case FILTER_TYPES.EXPLICIT:
-                // Здесь можно добавить логику фильтрации по уровню матерности
-                break;
-        }
+        // Сортируем по дате (самые новые сверху)
+        reviews.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
         // Обновляем DOM
         container.innerHTML = reviews.map(review => `
-            <article class="review" data-id="${review.id}">
-                <p class="review__text">${review.text}</p>
+            <article class="review" data-id="${review.id}" data-lat="${review.latitude}" data-lng="${review.longitude}">
                 ${review.photo_url ? `
-                    <img class="review__photo" src="${supabase.storage.from('reviews-photos').getPublicUrl(review.photo_url).data.publicUrl}" alt="Фото к отзыву">
+                    <img class="review__photo" src="${supabase.storage.from('reviews-photos').getPublicUrl(review.photo_url).data.publicUrl}" alt="Фото к отзыву" loading="lazy">
                 ` : ''}
+                <p class="review__text">${review.text}</p>
                 <div class="review__meta">
                     <span class="review__date">${new Date(review.created_at).toLocaleDateString()}</span>
-                    <button class="review__like-btn" onclick="handleLike('${review.id}')">
-                        👍 ${review.likes?.count || 0}
-                    </button>
+                    <span class="review__likes">👍 ${review.likes?.count || 0}</span>
                 </div>
             </article>
         `).join('');
+
+        // Добавляем обработчики клика на отзывы
+        container.querySelectorAll('.review').forEach(reviewElement => {
+            reviewElement.addEventListener('click', () => {
+                const id = reviewElement.dataset.id;
+                const lat = parseFloat(reviewElement.dataset.lat);
+                const lng = parseFloat(reviewElement.dataset.lng);
+                
+                // Центрируем карту на маркере
+                mapManager.centerOnMarker(id);
+                
+                // Открываем попап маркера
+                mapManager.openMarkerPopup(id);
+                
+                // Добавляем класс активности для отзыва
+                container.querySelectorAll('.review').forEach(el => el.classList.remove('review--active'));
+                reviewElement.classList.add('review--active');
+            });
+        });
     }
 
     // Обработка лайка отзыва

@@ -201,7 +201,15 @@ class MapManager {
     centerOnMarker(id) {
         const marker = this.markers.get(id);
         if (marker) {
-            this.map.setView(marker.getLatLng(), this.map.getZoom());
+            this.map.setView(marker.getLatLng(), Math.max(this.map.getZoom(), 15));
+        }
+    }
+
+    // Открытие попапа маркера
+    openMarkerPopup(id) {
+        const marker = this.markers.get(id);
+        if (marker) {
+            marker.openPopup();
         }
     }
 
