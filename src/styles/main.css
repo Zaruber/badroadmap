@@ -49,12 +49,12 @@
 
 html, body {
     height: 100%;
-    overflow: hidden;
     background-color: var(--color-background);
     color: var(--color-text);
     font-family: var(--font-family);
     font-size: var(--font-size-md);
     line-height: 1.5;
+    overflow: hidden;
 }
 
 /* Шапка */
@@ -94,62 +94,107 @@ html, body {
 .main {
     display: grid;
     grid-template-columns: 1fr 350px;
-    gap: var(--spacing-md);
-    padding-top: 64px;
-    height: calc(100vh - 64px);
+    height: 100vh;
     overflow: hidden;
+    padding: var(--spacing-md);
+    gap: var(--spacing-md);
+    background-color: var(--color-background);
 }
 
 /* Карта */
 .map {
     width: 100%;
-    height: 100%;
+    height: calc(100vh - var(--spacing-md) * 2);
     background-color: var(--color-background);
-    border-radius: var(--border-radius-md);
+    position: relative;
+    border-radius: var(--border-radius-lg);
     overflow: hidden;
+}
+
+/* Убираем стили Leaflet, которые могут мешать */
+.leaflet-container {
+    background: var(--color-background) !important;
+    outline: none !important;
+    border-radius: var(--border-radius-lg) !important;
+}
+
+.leaflet-control-container {
+    display: none !important;
 }
 
 /* Сайдбар */
 .sidebar {
     background-color: var(--color-surface);
+    padding: var(--spacing-lg);
+    overflow-y: auto;
+    border-left: 1px solid var(--color-border);
+    height: calc(100vh - var(--spacing-md) * 2);
+    position: relative;
+    z-index: 1;
+    border-radius: var(--border-radius-lg);
+}
+
+.sidebar__header {
+    margin-bottom: var(--spacing-xl);
+}
+
+.sidebar__title {
+    font-size: var(--font-size-xl);
+    font-weight: 700;
+    color: var(--color-primary);
+    margin-bottom: var(--spacing-sm);
+}
+
+.sidebar__subtitle {
+    font-size: var(--font-size-lg);
+    color: var(--color-text);
+    margin-bottom: var(--spacing-lg);
+}
+
+/* Отзывы */
+.reviews__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.review {
+    background-color: var(--color-surface-light);
     border-radius: var(--border-radius-md);
     padding: var(--spacing-md);
-    overflow-y: auto;
     border: 1px solid var(--color-border);
 }
 
-/* Кнопки */
-.button {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: none;
-    border-radius: var(--border-radius-sm);
-    font-size: var(--font-size-md);
-    font-weight: 500;
-    cursor: pointer;
-    background-color: var(--color-surface-light);
+.review__text {
     color: var(--color-text);
-    transition: background-color var(--transition-fast);
-}
-
-.button--primary {
-    background-color: var(--color-primary);
-    color: var(--color-background);
-}
-
-.button--primary:hover {
-    background-color: var(--color-primary);
-    opacity: 0.9;
-}
-
-/* Селект */
-.select {
-    padding: var(--spacing-sm) var(--spacing-md);
-    border: 1px solid var(--color-border);
-    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-md);
     font-size: var(--font-size-md);
-    background-color: var(--color-surface-light);
-    color: var(--color-text);
-    cursor: pointer;
+}
+
+.review__photo {
+    width: 100%;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-md);
+    object-fit: cover;
+}
+
+.review__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+}
+
+.review__date {
+    color: var(--color-text-secondary);
+}
+
+.review__likes {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--color-text-secondary);
 }
 
 /* Модальное окно */
@@ -222,62 +267,6 @@ html, body {
     color: var(--color-text);
 }
 
-/* Отзывы */
-.reviews {
-    margin-bottom: var(--spacing-lg);
-}
-
-.reviews__title {
-    font-size: var(--font-size-lg);
-    margin-bottom: var(--spacing-md);
-    color: var(--color-text);
-}
-
-.reviews__list {
-    display: flex;
-    flex-direction: column;
-    gap: var(--spacing-md);
-}
-
-.review {
-    background-color: var(--color-surface-light);
-    border-radius: var(--border-radius-md);
-    padding: var(--spacing-md);
-    border: 1px solid var(--color-border);
-}
-
-.review__text {
-    color: var(--color-text);
-    margin-bottom: var(--spacing-md);
-}
-
-.review__photo {
-    width: 100%;
-    border-radius: var(--border-radius-sm);
-    margin-bottom: var(--spacing-md);
-}
-
-.review__meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: var(--color-text-secondary);
-}
-
-.review__like-btn {
-    background: none;
-    border: none;
-    color: var(--color-text-secondary);
-    cursor: pointer;
-    padding: var(--spacing-xs) var(--spacing-sm);
-    border-radius: var(--border-radius-sm);
-    transition: background-color var(--transition-fast);
-}
-
-.review__like-btn:hover {
-    background-color: var(--color-surface);
-}
-
 /* Медиа запросы */
 @media (max-width: 768px) {
     .main {
@@ -287,12 +276,12 @@ html, body {
     .sidebar {
         position: fixed;
         right: 0;
-        top: 64px;
+        top: 0;
         bottom: 0;
         width: 100%;
         max-width: 350px;
         transform: translateX(100%);
-        transition: transform var(--transition-fast);
+        transition: transform 0.3s ease;
     }
 
     .sidebar.is-active {

@@ -13,13 +13,14 @@ class MapManager {
             center: MAP_CONFIG.center,
             zoom: MAP_CONFIG.zoom,
             minZoom: MAP_CONFIG.minZoom,
-            maxZoom: MAP_CONFIG.maxZoom
+            maxZoom: MAP_CONFIG.maxZoom,
+            attributionControl: false
         });
 
         // Добавляем стильную темную карту
         L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
             maxZoom: 20,
-            attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+            attribution: ''
         }).addTo(this.map);
 
         // Настраиваем стиль маркеров
@@ -60,19 +61,38 @@ class MapManager {
                 0% { transform: rotate(-45deg) translateY(-10px); }
                 100% { transform: rotate(-45deg) translateY(0); }
             }
+            .leaflet-popup {
+                margin-bottom: 15px;
+            }
             .leaflet-popup-content-wrapper {
                 background: var(--color-surface);
                 color: var(--color-text);
                 border-radius: var(--border-radius-md);
                 border: 1px solid var(--color-border);
+                box-shadow: var(--shadow-lg);
+            }
+            .leaflet-popup-content {
+                margin: var(--spacing-md);
+                font-family: var(--font-family);
             }
             .leaflet-popup-tip {
                 background: var(--color-surface);
                 border: 1px solid var(--color-border);
             }
-            .leaflet-popup-content {
-                margin: var(--spacing-md);
-                font-family: var(--font-family);
+            .review-preview {
+                min-width: 200px;
+            }
+            .review-preview__text {
+                color: var(--color-text);
+                margin-bottom: var(--spacing-sm);
+                font-size: var(--font-size-sm);
+            }
+            .review-preview__meta {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                color: var(--color-text-secondary);
+                font-size: var(--font-size-sm);
             }
         `;
         document.head.appendChild(style);
@@ -140,7 +160,8 @@ class MapManager {
                 className: 'custom-marker',
                 html: `<div class="marker-pin"></div>`,
                 iconSize: [30, 30],
-                iconAnchor: [15, 30]
+                iconAnchor: [15, 30],
+                popupAnchor: [0, -30]
             })
         })
             .bindPopup(text)
