@@ -19,21 +19,11 @@ class MapManager {
         });
 
         // Добавляем стильную темную карту
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap contributors'
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            attribution: '',
+            subdomains: 'abcd',
+            maxZoom: 19
         }).addTo(this.map);
-
-        // Добавляем темную тему поверх карты
-        const darkOverlay = L.rectangle(
-            [[-90, -180], [90, 180]], 
-            {
-                color: 'transparent',
-                fillColor: '#000',
-                fillOpacity: 0.3,
-                interactive: false
-            }
-        ).addTo(this.map);
 
         // Настраиваем стиль маркеров
         const customIcon = L.divIcon({

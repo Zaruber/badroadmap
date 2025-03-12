@@ -29,12 +29,6 @@ class ReviewManager {
             e.preventDefault();
             await this.handleReviewSubmit(e.target);
         });
-
-        // Обработка изменения фильтра
-        document.getElementById('filterSelect').addEventListener('change', (e) => {
-            this.currentFilter = e.target.value;
-            this.updateReviewsList();
-        });
     }
 
     // Загрузка отзывов из базы данных
