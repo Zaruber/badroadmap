@@ -19,10 +19,21 @@ class MapManager {
         });
 
         // Добавляем стильную темную карту
-        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
-            maxZoom: 20,
-            attribution: ''
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap contributors'
         }).addTo(this.map);
+
+        // Добавляем темную тему поверх карты
+        const darkOverlay = L.rectangle(
+            [[-90, -180], [90, 180]], 
+            {
+                color: 'transparent',
+                fillColor: '#000',
+                fillOpacity: 0.3,
+                interactive: false
+            }
+        ).addTo(this.map);
 
         // Настраиваем стиль маркеров
         const customIcon = L.divIcon({

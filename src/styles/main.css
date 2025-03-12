@@ -2,8 +2,8 @@
 :root {
     /* Цвета */
     --color-background: #1a1a1a;
-    --color-surface: rgba(37, 37, 37, 0.95);
-    --color-surface-light: rgba(45, 45, 45, 0.9);
+    --color-surface: rgba(26, 26, 26, 0.95);
+    --color-surface-light: rgba(37, 37, 37, 0.95);
     --color-primary: #ffd700;
     --color-text: #ffffff;
     --color-text-secondary: rgba(255, 255, 255, 0.7);
@@ -27,9 +27,9 @@
     --font-size-xl: 1.5rem;
 
     /* Тени */
-    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
 
     /* Скругления */
     --border-radius-sm: 8px;
@@ -312,4 +312,23 @@ html, body {
     .modal__content {
         margin: var(--spacing-md);
     }
+}
+
+.ad-container {
+    background: rgba(26, 26, 26, 0.95);
+    border: 1px solid var(--color-primary);
+    border-radius: 6px;
+    padding: 4px 8px;
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: 10px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    backdrop-filter: blur(4px);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    width: max-content;
 } 
