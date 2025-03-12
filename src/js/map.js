@@ -8,6 +8,7 @@ class MapManager {
         this.adMarkers = [];
         this._lastAdUpdateTime = null;
         this._adEventsAttached = false;
+        this._adRefreshTimer = null;
     }
 
     // Инициализация карты
@@ -22,7 +23,7 @@ class MapManager {
 
         // Добавляем стильную темную карту
         L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-            attribution: '',
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
             subdomains: 'abcd',
             maxZoom: 19
         }).addTo(this.map);
@@ -541,10 +542,23 @@ class MapManager {
             });
         }
 
-        // Добавляем обработчик события для обновления рекламных плашек при изменении карты
+        // Устанавливаем таймер для обновления рекламы
+        if (this._adRefreshTimer) {
+            clearTimeout(this._adRefreshTimer);
+        }
+        
+        // Случайное время между 2 и 3 минутами
+        const refreshTime = (120 + Math.floor(Math.random() * 60)) * 1000;
+        
+        this._adRefreshTimer = setTimeout(() => {
+            this.addAdvertisements();
+        }, refreshTime);
+
+        // Добавляем обработчик события для обновления рекламных плашек только при инициализации
         if (!this._adEventsAttached) {
-            this.map.on('moveend', () => {
-                // Обновляем рекламные плашки с небольшой задержкой
+            // Обновляем рекламу при первой загрузке карты
+            this.map.once('moveend', () => {
+                // Первоначальное добавление рекламы с небольшой задержкой после загрузки карты
                 setTimeout(() => this.addAdvertisements(), 300);
             });
             
