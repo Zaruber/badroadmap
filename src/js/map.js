@@ -507,8 +507,8 @@ class MapManager {
                         <div class="ad-popup-price">Стоимость размещения: от ${adContent.price} в месяц</div>
                         
                         <div class="ad-popup-links">
-                            <a href="#" class="ad-popup-link" onclick="alert('Переход на страницу с подробностями'); return false;">Подробнее</a>
-                            <a href="#" class="ad-popup-link" onclick="alert('Отправка запроса рекламодателю'); return false;">Связаться</a>
+                            <a href="mailto:temple@mail.com" class="ad-popup-link" onclick="alert('Отправка запроса рекламодателю'); return false;">📧 Email</a>
+                            <a href="https://t.me/t33puck" class="ad-popup-link" onclick="alert('Переход в Telegram'); return false;">📱 Telegram</a>
                         </div>
                     </div>
                 </div>
@@ -555,4 +555,4 @@ class MapManager {
 
 // Создаем и экспортируем экземпляр менеджера карты
 const mapManager = new MapManager();
-export default mapManager; 
+export default mapManager;
