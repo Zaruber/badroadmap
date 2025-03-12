@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Карта дорог с отзывами пользователей">
+    <title>МатМап - Карта дорог с отзывами</title>
+    
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
+    <!-- Наши стили -->
+    <link rel="stylesheet" href="src/styles/main.css">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="public/favicon.ico">
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <header class="header">
+        <nav class="header__nav">
+            <h1 class="header__title">МатМап</h1>
+            <div class="header__controls">
+                <button class="button button--primary" id="addMarkButton">Добавить отметку</button>
+                <div class="header__filters">
+                    <select class="select" id="filterSelect">
+                        <option value="date">По дате</option>
+                        <option value="rating">По рейтингу</option>
+                        <option value="explicit">По матерности</option>
+                    </select>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <div id="map" class="map"></div>
+        
+        <aside class="sidebar" id="sidebar">
+            <div class="reviews">
+                <h2 class="reviews__title">Последние отзывы</h2>
+                <div class="reviews__list" id="reviewsList">
+                    <!-- Здесь будут отзывы -->
+                </div>
+            </div>
+            
+            <div class="advertisement">
+                <p class="advertisement__text">Тут могла быть ваша реклама шиномонтажки</p>
+            </div>
+        </aside>
+        
+        <!-- Модальное окно добавления отметки -->
+        <div class="modal" id="addMarkModal">
+            <div class="modal__content">
+                <h3 class="modal__title">Добавить отзыв</h3>
+                <form class="form" id="addMarkForm">
+                    <div class="form__group">
+                        <label class="form__label" for="reviewText">Ваш отзыв:</label>
+                        <textarea class="form__textarea" id="reviewText" required></textarea>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="photoUpload">Фото (необязательно):</label>
+                        <input type="file" class="form__file" id="photoUpload" accept="image/*">
+                    </div>
+                    <div class="form__actions">
+                        <button type="submit" class="button button--success">Отправить</button>
+                        <button type="button" class="button button--secondary" id="cancelButton">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <p class="footer__text">© 2024 МатМап - Все права защищены</p>
+    </footer>
+    
+    <!-- SQL для создания таблиц -->
+    <script>
+        const createReviewsTable = `
+            create table if not exists reviews (
+                id uuid default uuid_generate_v4() primary key,
+                text text not null,
+                photo_url text,
+                latitude float not null,
+                longitude float not null,
+                created_at timestamp with time zone default timezone('utc'::text, now())
+            );
+        `;
+
+        const createLikesTable = `
+            create table if not exists likes (
+                id uuid default uuid_generate_v4() primary key,
+                review_id uuid references reviews(id) on delete cascade,
+                created_at timestamp with time zone default timezone('utc'::text, now())
+            );
+        `;
+    </script>
+
+    <!-- Наши скрипты -->
+    <script type="module" src="src/js/config.js"></script>
+    <script type="module" src="src/js/map.js"></script>
+    <script type="module" src="src/js/reviews.js"></script>
+    <script type="module" src="src/js/main.js"></script>
+</body>
+</html> 

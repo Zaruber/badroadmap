@@ -1,0 +1,297 @@
+/* Переменные */
+:root {
+    /* Цвета */
+    --color-primary: #2196F3;
+    --color-primary-dark: #1976D2;
+    --color-secondary: #757575;
+    --color-success: #4CAF50;
+    --color-danger: #F44336;
+    --color-warning: #FFC107;
+    --color-background: #FFFFFF;
+    --color-text: #212121;
+    --color-text-light: #757575;
+    --color-border: #E0E0E0;
+
+    /* Размеры */
+    --spacing-xs: 0.25rem;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 1.5rem;
+    --spacing-xl: 2rem;
+
+    /* Шрифты */
+    --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, sans-serif;
+    --font-size-sm: 0.875rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
+    --font-size-xl: 1.5rem;
+
+    /* Тени */
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
+    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+
+    /* Скругления */
+    --border-radius-sm: 4px;
+    --border-radius-md: 8px;
+    --border-radius-lg: 16px;
+
+    /* Анимации */
+    --transition-fast: 150ms ease;
+    --transition-normal: 300ms ease;
+}
+
+/* Сброс стилей */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-family);
+    font-size: var(--font-size-md);
+    line-height: 1.5;
+    color: var(--color-text);
+    background-color: var(--color-background);
+}
+
+/* Компоненты */
+
+/* Шапка */
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-background);
+    box-shadow: var(--shadow-sm);
+    z-index: 1000;
+    padding: var(--spacing-md);
+}
+
+.header__nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.header__title {
+    font-size: var(--font-size-xl);
+    font-weight: 500;
+    color: var(--color-primary);
+}
+
+.header__controls {
+    display: flex;
+    gap: var(--spacing-md);
+    align-items: center;
+}
+
+/* Основной контент */
+.main {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: var(--spacing-md);
+    padding-top: 64px; /* Высота шапки */
+    height: calc(100vh - 64px); /* Вычитаем высоту шапки */
+    overflow: hidden;
+}
+
+/* Карта */
+.map {
+    width: 100%;
+    height: 100%;
+    background-color: #f5f5f5;
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+}
+
+/* Сайдбар */
+.sidebar {
+    padding: var(--spacing-md);
+    background-color: var(--color-background);
+    border-left: 1px solid var(--color-border);
+    overflow-y: auto;
+}
+
+/* Кнопки */
+.button {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: none;
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-md);
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color var(--transition-fast);
+}
+
+.button--primary {
+    background-color: var(--color-primary);
+    color: white;
+}
+
+.button--primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.button--secondary {
+    background-color: var(--color-secondary);
+    color: white;
+}
+
+.button--success {
+    background-color: var(--color-success);
+    color: white;
+}
+
+/* Селект */
+.select {
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    font-size: var(--font-size-md);
+    background-color: var(--color-background);
+}
+
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal.is-active {
+    display: flex;
+}
+
+.modal__content {
+    background-color: var(--color-background);
+    padding: var(--spacing-lg);
+    border-radius: var(--border-radius-md);
+    width: 100%;
+    max-width: 500px;
+    box-shadow: var(--shadow-lg);
+}
+
+.modal__title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+/* Форма */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+}
+
+.form__label {
+    font-weight: 500;
+    color: var(--color-text);
+}
+
+.form__textarea {
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    min-height: 100px;
+    resize: vertical;
+}
+
+.form__file {
+    padding: var(--spacing-sm);
+}
+
+.form__actions {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: flex-end;
+    margin-top: var(--spacing-md);
+}
+
+/* Отзывы */
+.reviews {
+    margin-bottom: var(--spacing-lg);
+}
+
+.reviews__title {
+    font-size: var(--font-size-lg);
+    margin-bottom: var(--spacing-md);
+}
+
+.reviews__list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-md);
+}
+
+/* Реклама */
+.advertisement {
+    padding: var(--spacing-md);
+    background-color: #f5f5f5;
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    color: var(--color-text-light);
+}
+
+/* Подвал */
+.footer {
+    padding: var(--spacing-md);
+    text-align: center;
+    color: var(--color-text-light);
+    border-top: 1px solid var(--color-border);
+}
+
+/* Медиа запросы */
+@media (max-width: 768px) {
+    .main {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+        right: 0;
+        top: 64px;
+        bottom: 0;
+        width: 100%;
+        max-width: 300px;
+        transform: translateX(100%);
+        transition: transform var(--transition-normal);
+    }
+
+    .sidebar.is-active {
+        transform: translateX(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .header__controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .modal__content {
+        margin: var(--spacing-md);
+    }
+} 
