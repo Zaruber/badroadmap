@@ -285,21 +285,151 @@ html, body {
 @media (max-width: 768px) {
     .main {
         grid-template-columns: 1fr;
+        padding: 0;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .map {
+        height: 100vh;
+        border-radius: 0;
     }
 
     .sidebar {
+        display: none; /* Скрываем стандартный сайдбар на мобильных */
+    }
+
+    /* Стили для мобильной карусели отзывов */
+    .mobile-reviews {
+        display: block;
         position: fixed;
-        right: 0;
-        top: 0;
         bottom: 0;
-        width: 100%;
-        max-width: 350px;
-        transform: translateX(100%);
+        left: 0;
+        right: 0;
+        background: transparent;
+        z-index: 1000;
+        pointer-events: none;
+    }
+
+    .mobile-reviews__container {
+        padding: var(--spacing-md);
+        overflow: visible;
+        pointer-events: none;
+    }
+
+    .mobile-reviews__carousel {
+        display: flex;
+        gap: var(--spacing-md);
+        overflow-x: auto;
+        padding: 0 var(--spacing-md);
+        scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        pointer-events: all;
+    }
+
+    .mobile-reviews__carousel::-webkit-scrollbar {
+        display: none;
+    }
+
+    .mobile-reviews .review {
+        min-width: 85%;
+        max-width: 85%;
+        scroll-snap-align: center;
+        box-shadow: var(--shadow-lg);
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        backdrop-filter: blur(10px);
+        margin-bottom: var(--spacing-md);
+        transform: none;
         transition: transform 0.3s ease;
     }
 
-    .sidebar.is-active {
-        transform: translateX(0);
+    .mobile-reviews .review:hover {
+        transform: translateY(-5px);
+    }
+
+    .mobile-reviews .review--active {
+        border-color: var(--color-primary);
+    }
+
+    /* Индикаторы карусели */
+    .carousel-indicators {
+        display: flex;
+        justify-content: center;
+        gap: 8px;
+        margin-top: 8px;
+    }
+
+    .carousel-indicators__dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .carousel-indicators__dot--active {
+        background-color: var(--color-primary);
+        width: 20px;
+        border-radius: 4px;
+    }
+    
+    /* Контролы карты (центрирование) */
+    .map-controls {
+        position: fixed;
+        bottom: 240px;
+        right: var(--spacing-md);
+        z-index: 999;
+        pointer-events: all;
+    }
+    
+    .map-control-button {
+        width: 40px;
+        height: 40px;
+        background-color: var(--color-surface);
+        border: 1px solid var(--color-border);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--color-text);
+        font-size: 18px;
+        box-shadow: var(--shadow-md);
+        cursor: pointer;
+        transition: all 0.2s ease;
+    }
+    
+    .map-control-button:hover {
+        background-color: var(--color-primary);
+        color: var(--color-background);
+    }
+    
+    /* Кнопка добавления отзыва для мобильных */
+    .add-review-button {
+        position: fixed;
+        right: var(--spacing-md);
+        bottom: 300px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background-color: var(--color-primary);
+        color: var(--color-background);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        box-shadow: var(--shadow-lg);
+        cursor: pointer;
+        z-index: 999;
+        border: none;
+        pointer-events: all;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    
+    .add-review-button:hover {
+        transform: scale(1.05);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
     }
 }
 
@@ -311,6 +441,50 @@ html, body {
 
     .modal__content {
         margin: var(--spacing-md);
+        padding: var(--spacing-md);
+    }
+    
+    .mobile-reviews .review {
+        min-width: 90%;
+        max-width: 90%;
+    }
+}
+
+/* Специфические стили для iPhone 13 Pro Max */
+@media only screen 
+and (device-width: 428px) 
+and (device-height: 926px) 
+and (-webkit-device-pixel-ratio: 3) {
+    .mobile-reviews .review {
+        min-width: 85%;
+        max-width: 85%;
+    }
+    
+    .add-review-button {
+        bottom: 280px;
+    }
+    
+    .map-controls {
+        bottom: 220px;
+    }
+}
+
+/* Анимации */
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+    }
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }
 
@@ -331,4 +505,310 @@ html, body {
     gap: 6px;
     min-width: 0;
     width: max-content;
-} 
+}
+
+/* Мобильная навигация */
+.mobile-nav {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: var(--color-surface);
+    backdrop-filter: blur(10px);
+    border-top: 1px solid var(--color-border);
+    padding: var(--spacing-md);
+    z-index: 1100;
+    box-shadow: var(--shadow-lg);
+}
+
+.mobile-nav__button {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    background-color: transparent;
+    border: none;
+    color: var(--color-text-secondary);
+    font-family: var(--font-family);
+    font-size: var(--font-size-sm);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.mobile-nav__button span {
+    font-size: 10px;
+    font-weight: 500;
+}
+
+.mobile-nav__button svg {
+    margin-bottom: 2px;
+}
+
+.mobile-nav__button:hover,
+.mobile-nav__button--active {
+    color: var(--color-primary);
+}
+
+/* Стили для модального окна выбора стиля карты */
+.map-style-options {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-lg);
+}
+
+.map-style-option {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    transition: all 0.2s ease;
+}
+
+.map-style-option:hover,
+.map-style-option--active {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+}
+
+.map-style-preview {
+    width: 100%;
+    height: 70px;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+}
+
+.map-style-preview--dark {
+    background-color: #242424;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGw9IiMzMzMiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjxwYXRoIGQ9Ik00NSA0NWgxMHYxMGgtMTB6IiBmaWxsPSIjNTU1Ii8+PHBhdGggZD0iTTIwIDIwaDYwdjYwSDIweiIgc3Ryb2tlPSIjNDQ0IiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+');
+}
+
+.map-style-preview--light {
+    background-color: #f8f8f8;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGw9IiNmZmYiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjxwYXRoIGQ9Ik00NSA0NWgxMHYxMGgtMTB6IiBmaWxsPSIjZjBmMGYwIi8+PHBhdGggZD0iTTIwIDIwaDYwdjYwSDIweiIgc3Ryb2tlPSIjZWVlIiBzdHJva2Utd2lkdGg9IjIiLz48L2c+PC9zdmc+');
+}
+
+.map-style-preview--satellite {
+    background-color: #112233;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxwYXRoIGZpbGw9IiMxMTIyMzMiIGQ9Ik0wIDBoMTAwdjEwMEgweiIvPjxwYXRoIGQ9Ik0yMCAyMGg2MHY2MEgyMHoiIHN0cm9rZT0iIzMzNjY4OCIgc3Ryb2tlLXdpZHRoPSIyIi8+PHBhdGggZD0iTTUwIDQwYzUuNTIyIDAgMTAgNC40NzcgMTAgMTAgMCA1LjUyMi00LjQ3OCAxMC0xMCAxMHMtMTAtNC40NzgtMTAtMTBjMC01LjUyMyA0LjQ3Ny0xMCAxMC0xMHoiIGZpbGw9IiM4ODk5YWEiLz48L2c+PC9zdmc+');
+}
+
+.map-style-option span {
+    color: var(--color-text);
+    font-size: var(--font-size-sm);
+}
+
+/* Стили для формы поиска */
+.form__input {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--border-radius-sm);
+    background-color: var(--color-surface-light);
+    color: var(--color-text);
+    font-family: var(--font-family);
+    font-size: var(--font-size-md);
+}
+
+.form__input:focus {
+    outline: none;
+    border-color: var(--color-primary);
+}
+
+/* Медиа запросы для мобильных устройств */
+@media (max-width: 768px) {
+    .mobile-nav {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .mobile-reviews {
+        bottom: 60px;
+    }
+
+    .add-review-button {
+        bottom: 360px;
+    }
+    
+    .map-controls {
+        bottom: 300px;
+    }
+    
+    /* Скрываем карусель по умолчанию */
+    .mobile-reviews {
+        display: none;
+    }
+    
+    .mobile-reviews.is-visible {
+        display: block;
+        animation: slideInUp 0.3s ease;
+    }
+    
+    /* Стрелка для сворачивания карусели */
+    .mobile-reviews__toggle {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: transparent;
+        border: none;
+        color: var(--color-text-secondary);
+        font-size: 18px;
+        cursor: pointer;
+        z-index: 1;
+    }
+    
+    .mobile-reviews__toggle:hover {
+        color: var(--color-primary);
+    }
+}
+
+/* Специфические стили для iPhone 13 Pro Max */
+@media only screen 
+and (device-width: 428px) 
+and (device-height: 926px) 
+and (-webkit-device-pixel-ratio: 3) {
+    .mobile-reviews {
+        bottom: 60px;
+    }
+    
+    .add-review-button {
+        bottom: 340px;
+    }
+    
+    .map-controls {
+        bottom: 280px;
+    }
+}
+
+/* Стили для Tinder-подобных свайпов */
+.review {
+    position: relative;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    will-change: transform, opacity;
+    user-select: none;
+    touch-action: pan-y;
+    -webkit-user-drag: none;
+    -webkit-tap-highlight-color: transparent;
+    box-shadow: var(--shadow-md);
+    border-radius: var(--border-radius-md);
+    overflow: hidden;
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    padding: var(--spacing-md);
+    max-width: 300px;
+    min-width: 250px;
+    min-height: 140px;
+    margin-right: var(--spacing-md);
+}
+
+.review:active {
+    cursor: grabbing;
+}
+
+.review.swiped-left {
+    transform: translateX(-1000px) rotate(-30deg);
+    opacity: 0;
+}
+
+.review.swiped-right {
+    transform: translateX(1000px) rotate(30deg);
+    opacity: 0;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* Анимация появления отзывов */
+.mobile-reviews.is-visible {
+    animation: slideInUp 0.3s ease forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideOutDown {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(100%);
+        opacity: 0;
+    }
+}
+
+.mobile-reviews.is-hiding {
+    animation: slideOutDown 0.3s ease forwards;
+}
+
+/* Улучшенные стили для мобильных отзывов */
+.mobile-reviews {
+    transform: translateY(100%);
+    opacity: 0;
+    transition: none;
+}
+
+.mobile-reviews.is-visible {
+    transform: translateY(0);
+    opacity: 1;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Маркер результата поиска */
+.search-result-marker {
+    pointer-events: none;
+}
+
+.pulse {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(var(--color-primary-rgb), 0.7);
+    box-shadow: 0 0 0 rgba(var(--color-primary-rgb), 0.4);
+    animation: pulse-animation 2s infinite;
+}
+
+@keyframes pulse-animation {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0.7);
+    }
+    
+    70% {
+        transform: scale(1.2);
+        box-shadow: 0 0 0 10px rgba(var(--color-primary-rgb), 0);
+    }
+    
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(var(--color-primary-rgb), 0);
+    }
+}

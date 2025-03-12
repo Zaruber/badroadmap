@@ -5,6 +5,7 @@ class ReviewManager {
     constructor() {
         this.reviews = new Map();
         this.currentFilter = FILTER_TYPES.DATE;
+        this.supabase = supabase; // Экспортируем supabase для доступа из других модулей
     }
 
     // Инициализация менеджера отзывов

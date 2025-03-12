@@ -4,19 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Карта дорог с отзывами пользователей">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+
     <title>МатМап - Карта дорог с отзывами</title>
-    
-    <!-- Base URL для GitHub Pages -->
-    <base href="/badroadmap/">
     
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
     
     <!-- Наши стили -->
-    <link rel="stylesheet" href="src/styles/main.css">
+    <link rel="stylesheet" href="./src/styles/main.css">
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="public/favicon.ico">
+    <link rel="icon" type="image/x-icon" href="./public/favicon.ico">
 
     <!-- Inter Font -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -42,6 +43,53 @@
             </div>
         </aside>
         
+        <!-- Мобильная версия отзывов (карусель) -->
+        <div class="mobile-reviews" id="mobileReviews">
+            <div class="mobile-reviews__container">
+                <div class="mobile-reviews__carousel" id="reviewsCarousel">
+                    <!-- Здесь будут отзывы для мобильной версии -->
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators">
+                    <!-- Здесь будут индикаторы карусели -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Кнопка добавления отзыва для мобильных устройств -->
+        <button class="add-review-button" id="addReviewBtn">+</button>
+        
+        <!-- Контролы карты для мобильных устройств -->
+        <div class="map-controls">
+            <button class="map-control-button" id="centerMapBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 0a.5.5 0 0 1 .5.5v.518A7 7 0 0 1 14.982 7.5h.518a.5.5 0 0 1 0 1h-.518A7 7 0 0 1 8.5 14.982v.518a.5.5 0 0 1-1 0v-.518A7 7 0 0 1 1.018 8.5H.5a.5.5 0 0 1 0-1h.518A7 7 0 0 1 7.5 1.018V.5A.5.5 0 0 1 8 0Zm0 2.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM6.5 8a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z"/>
+                </svg>
+            </button>
+        </div>
+        
+        <!-- Мобильная навигация -->
+        <nav class="mobile-nav">
+            <button class="mobile-nav__button" id="mapStyleBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                </svg>
+                <span>Стиль карты</span>
+            </button>
+            <button class="mobile-nav__button" id="searchAddressBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+                <span>Поиск</span>
+            </button>
+            <button class="mobile-nav__button" id="toggleReviewsBtn">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M14 1a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H4.414A2 2 0 0 0 3 11.586l-2 2V2a1 1 0 0 1 1-1h12zM2 0a2 2 0 0 0-2 2v12.793a.5.5 0 0 0 .854.353l2.853-2.853A1 1 0 0 1 4.414 12H14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2z"/>
+                    <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+                <span>Отзывы</span>
+            </button>
+        </nav>
+        
         <!-- Модальное окно добавления отметки -->
         <div class="modal" id="addMarkModal">
             <div class="modal__content">
@@ -60,6 +108,47 @@
                         <button type="button" class="button button--secondary" id="cancelButton">Отмена</button>
                     </div>
                 </form>
+            </div>
+        </div>
+        
+        <!-- Модальное окно поиска адреса -->
+        <div class="modal" id="searchAddressModal">
+            <div class="modal__content">
+                <h3 class="modal__title">Поиск адреса</h3>
+                <form class="form" id="searchAddressForm">
+                    <div class="form__group">
+                        <label class="form__label" for="addressInput">Введите адрес:</label>
+                        <input type="text" class="form__input" id="addressInput" required>
+                    </div>
+                    <div class="form__actions">
+                        <button type="submit" class="button button--success">Найти</button>
+                        <button type="button" class="button button--secondary" id="cancelSearchButton">Отмена</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Модальное окно выбора стиля карты -->
+        <div class="modal" id="mapStyleModal">
+            <div class="modal__content">
+                <h3 class="modal__title">Выберите стиль карты</h3>
+                <div class="map-style-options">
+                    <div class="map-style-option" data-style="dark">
+                        <div class="map-style-preview map-style-preview--dark"></div>
+                        <span>Темная</span>
+                    </div>
+                    <div class="map-style-option" data-style="light">
+                        <div class="map-style-preview map-style-preview--light"></div>
+                        <span>Светлая</span>
+                    </div>
+                    <div class="map-style-option" data-style="satellite">
+                        <div class="map-style-preview map-style-preview--satellite"></div>
+                        <span>Спутник</span>
+                    </div>
+                </div>
+                <div class="form__actions">
+                    <button type="button" class="button button--secondary" id="cancelStyleButton">Закрыть</button>
+                </div>
             </div>
         </div>
     </main>
@@ -87,9 +176,9 @@
     </script>
 
     <!-- Наши скрипты -->
-    <script type="module" src="src/js/config.js"></script>
-    <script type="module" src="src/js/map.js"></script>
-    <script type="module" src="src/js/reviews.js"></script>
-    <script type="module" src="src/js/main.js"></script>
+    <script type="module" src="./src/js/config.js"></script>
+    <script type="module" src="./src/js/map.js"></script>
+    <script type="module" src="./src/js/reviews.js"></script>
+    <script type="module" src="./src/js/main.js"></script>
 </body>
-</html> 
+</html>
