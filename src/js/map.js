@@ -364,7 +364,7 @@ class MapManager {
                         </div>
                         <div class="ad-popup-links">
                             <a href="mailto:temple@mail.com" class="ad-popup-link" target="_blank">📧 Email</a>
-                            <a href="https://t.me/your_username" class="ad-popup-link" target="_blank">📱 Telegram</a>
+                            <a href="https://t.me/t33puck" class="ad-popup-link" target="_blank">📱 Telegram</a>
                         </div>
                     </div>
                 </div>
