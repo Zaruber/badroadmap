@@ -5,6 +5,7 @@ class MapManager {
         this.map = null;
         this.markers = new Map();
         this.currentPosition = null;
+        this.adMarkers = [];
     }
 
     // Инициализация карты
@@ -103,6 +104,9 @@ class MapManager {
         // Запрашиваем геолокацию пользователя
         this.getUserLocation();
 
+        // Добавляем рекламные плашки
+        this.addAdvertisements();
+        
         return this.map;
     }
 
@@ -221,6 +225,173 @@ class MapManager {
     // Получение текущего масштаба
     getZoom() {
         return this.map.getZoom();
+    }
+
+    // Добавление рекламных плашек
+    addAdvertisements() {
+        // Генерируем случайные точки вокруг центра карты
+        const center = this.map.getCenter();
+        const bounds = this.map.getBounds();
+        const latSpan = bounds.getNorth() - bounds.getSouth();
+        const lngSpan = bounds.getEast() - bounds.getWest();
+
+        // Добавляем стили для рекламных плашек
+        const style = document.createElement('style');
+        style.textContent += `
+            .ad-container {
+                background: rgba(26, 26, 26, 0.85);
+                border: 1px solid var(--color-primary);
+                border-radius: 6px;
+                padding: 4px 8px;
+                color: var(--color-text);
+                font-family: var(--font-family);
+                font-size: 10px;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+                backdrop-filter: blur(4px);
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                min-width: 0;
+                width: max-content;
+            }
+            .ad-container:hover {
+                transform: scale(1.05);
+                background: rgba(26, 26, 26, 0.95);
+                border-color: var(--color-primary);
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            }
+            .ad-text {
+                font-weight: 500;
+                color: var(--color-text);
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                white-space: nowrap;
+            }
+            .ad-text::before {
+                content: '💰';
+                font-size: 11px;
+            }
+            .ad-price {
+                color: var(--color-primary);
+                font-size: 9px;
+                font-weight: 600;
+                white-space: nowrap;
+                border-left: 1px solid rgba(255, 215, 0, 0.3);
+                padding-left: 6px;
+            }
+            .ad-popup {
+                background: rgba(26, 26, 26, 0.95) !important;
+                border: 1px solid var(--color-primary) !important;
+                border-radius: 8px !important;
+                padding: 12px !important;
+                font-family: var(--font-family) !important;
+                backdrop-filter: blur(4px);
+                min-width: 240px;
+            }
+            .ad-popup-content {
+                color: var(--color-text);
+                font-size: 12px;
+                line-height: 1.4;
+            }
+            .ad-popup-title {
+                color: var(--color-primary);
+                font-weight: 600;
+                margin-bottom: 8px;
+            }
+            .ad-popup-text {
+                margin-bottom: 10px;
+            }
+            .ad-popup-links {
+                display: flex;
+                gap: 10px;
+                margin-top: 8px;
+            }
+            .ad-popup-link {
+                color: var(--color-primary);
+                text-decoration: none;
+                font-size: 11px;
+                font-weight: 500;
+                padding: 4px 8px;
+                border: 1px solid var(--color-primary);
+                border-radius: 4px;
+                transition: all 0.2s ease;
+            }
+            .ad-popup-link:hover {
+                background: var(--color-primary);
+                color: #000;
+            }
+            .leaflet-popup-tip-container {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Создаем 5 рекламных плашек
+        for (let i = 0; i < 5; i++) {
+            const lat = center.lat + (Math.random() - 0.5) * latSpan * 0.8;
+            const lng = center.lng + (Math.random() - 0.5) * lngSpan * 0.8;
+
+            const adDiv = document.createElement('div');
+            adDiv.className = 'ad-container';
+            adDiv.innerHTML = `
+                <div class="ad-text">Реклама</div>
+                <div class="ad-price">10 000₽</div>
+            `;
+
+            const adIcon = L.divIcon({
+                className: 'ad-icon',
+                html: adDiv,
+                iconSize: [100, 'auto'],
+                iconAnchor: [50, 15]
+            });
+
+            const marker = L.marker([lat, lng], {
+                icon: adIcon,
+                zIndexOffset: 1000
+            }).addTo(this.map);
+
+            const popupContent = `
+                <div class="ad-popup">
+                    <div class="ad-popup-content">
+                        <div class="ad-popup-title">Разместите рекламу</div>
+                        <div class="ad-popup-text">
+                            Разместите у нас рекламу вашего бизнеса:<br>
+                            Шиномонтажка, эвакуатор, автозапчасти
+                        </div>
+                        <div class="ad-popup-links">
+                            <a href="mailto:temple@mail.com" class="ad-popup-link" target="_blank">📧 Email</a>
+                            <a href="https://t.me/your_username" class="ad-popup-link" target="_blank">📱 Telegram</a>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            marker.bindPopup(popupContent, {
+                className: 'ad-popup-wrapper',
+                closeButton: false,
+                offset: [0, -10]
+            });
+
+            marker.on('click', () => {
+                marker.openPopup();
+            });
+
+            this.adMarkers.push(marker);
+        }
+
+        // Обновляем размер плашек при изменении зума
+        this.map.on('zoomend', () => {
+            const zoom = this.map.getZoom();
+            const scale = Math.max(0.5, Math.min(1.1, zoom / 13));
+
+            document.querySelectorAll('.ad-container').forEach(container => {
+                container.style.transform = `scale(${scale})`;
+                container.style.opacity = Math.min(1, scale + 0.2);
+            });
+        });
     }
 }
 
