@@ -1,16 +1,16 @@
 /* Переменные */
 :root {
     /* Цвета */
-    --color-primary: #2196F3;
-    --color-primary-dark: #1976D2;
-    --color-secondary: #757575;
+    --color-background: #1a1a1a;
+    --color-surface: rgba(37, 37, 37, 0.95);
+    --color-surface-light: rgba(45, 45, 45, 0.9);
+    --color-primary: #ffd700;
+    --color-text: #ffffff;
+    --color-text-secondary: rgba(255, 255, 255, 0.7);
+    --color-border: rgba(255, 255, 255, 0.1);
     --color-success: #4CAF50;
-    --color-danger: #F44336;
     --color-warning: #FFC107;
-    --color-background: #FFFFFF;
-    --color-text: #212121;
-    --color-text-light: #757575;
-    --color-border: #E0E0E0;
+    --color-danger: #F44336;
 
     /* Размеры */
     --spacing-xs: 0.25rem;
@@ -20,25 +20,24 @@
     --spacing-xl: 2rem;
 
     /* Шрифты */
-    --font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', Oxygen, Ubuntu, sans-serif;
+    --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
     --font-size-sm: 0.875rem;
     --font-size-md: 1rem;
     --font-size-lg: 1.25rem;
     --font-size-xl: 1.5rem;
 
     /* Тени */
-    --shadow-sm: 0 1px 3px rgba(0,0,0,0.12);
-    --shadow-md: 0 4px 6px rgba(0,0,0,0.1);
-    --shadow-lg: 0 10px 15px rgba(0,0,0,0.1);
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
 
     /* Скругления */
-    --border-radius-sm: 4px;
-    --border-radius-md: 8px;
+    --border-radius-sm: 8px;
+    --border-radius-md: 12px;
     --border-radius-lg: 16px;
 
     /* Анимации */
     --transition-fast: 150ms ease;
-    --transition-normal: 300ms ease;
 }
 
 /* Сброс стилей */
@@ -51,17 +50,12 @@
 html, body {
     height: 100%;
     overflow: hidden;
-}
-
-body {
+    background-color: var(--color-background);
+    color: var(--color-text);
     font-family: var(--font-family);
     font-size: var(--font-size-md);
     line-height: 1.5;
-    color: var(--color-text);
-    background-color: var(--color-background);
 }
-
-/* Компоненты */
 
 /* Шапка */
 .header {
@@ -69,10 +63,11 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    background-color: var(--color-background);
-    box-shadow: var(--shadow-sm);
+    background-color: var(--color-surface);
+    backdrop-filter: blur(10px);
     z-index: 1000;
     padding: var(--spacing-md);
+    border-bottom: 1px solid var(--color-border);
 }
 
 .header__nav {
@@ -85,7 +80,7 @@ body {
 
 .header__title {
     font-size: var(--font-size-xl);
-    font-weight: 500;
+    font-weight: 600;
     color: var(--color-primary);
 }
 
@@ -98,10 +93,10 @@ body {
 /* Основной контент */
 .main {
     display: grid;
-    grid-template-columns: 1fr 300px;
+    grid-template-columns: 1fr 350px;
     gap: var(--spacing-md);
-    padding-top: 64px; /* Высота шапки */
-    height: calc(100vh - 64px); /* Вычитаем высоту шапки */
+    padding-top: 64px;
+    height: calc(100vh - 64px);
     overflow: hidden;
 }
 
@@ -109,17 +104,18 @@ body {
 .map {
     width: 100%;
     height: 100%;
-    background-color: #f5f5f5;
+    background-color: var(--color-background);
     border-radius: var(--border-radius-md);
     overflow: hidden;
 }
 
 /* Сайдбар */
 .sidebar {
+    background-color: var(--color-surface);
+    border-radius: var(--border-radius-md);
     padding: var(--spacing-md);
-    background-color: var(--color-background);
-    border-left: 1px solid var(--color-border);
     overflow-y: auto;
+    border: 1px solid var(--color-border);
 }
 
 /* Кнопки */
@@ -130,26 +126,19 @@ body {
     font-size: var(--font-size-md);
     font-weight: 500;
     cursor: pointer;
+    background-color: var(--color-surface-light);
+    color: var(--color-text);
     transition: background-color var(--transition-fast);
 }
 
 .button--primary {
     background-color: var(--color-primary);
-    color: white;
+    color: var(--color-background);
 }
 
 .button--primary:hover {
-    background-color: var(--color-primary-dark);
-}
-
-.button--secondary {
-    background-color: var(--color-secondary);
-    color: white;
-}
-
-.button--success {
-    background-color: var(--color-success);
-    color: white;
+    background-color: var(--color-primary);
+    opacity: 0.9;
 }
 
 /* Селект */
@@ -158,7 +147,9 @@ body {
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-sm);
     font-size: var(--font-size-md);
-    background-color: var(--color-background);
+    background-color: var(--color-surface-light);
+    color: var(--color-text);
+    cursor: pointer;
 }
 
 /* Модальное окно */
@@ -169,7 +160,8 @@ body {
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
     z-index: 2000;
     align-items: center;
     justify-content: center;
@@ -180,17 +172,18 @@ body {
 }
 
 .modal__content {
-    background-color: var(--color-background);
+    background-color: var(--color-surface);
     padding: var(--spacing-lg);
-    border-radius: var(--border-radius-md);
+    border-radius: var(--border-radius-lg);
     width: 100%;
     max-width: 500px;
-    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
 }
 
 .modal__title {
     font-size: var(--font-size-lg);
     margin-bottom: var(--spacing-md);
+    color: var(--color-text);
 }
 
 /* Форма */
@@ -208,26 +201,25 @@ body {
 
 .form__label {
     font-weight: 500;
-    color: var(--color-text);
+    color: var(--color-text-secondary);
 }
 
 .form__textarea {
     padding: var(--spacing-sm);
     border: 1px solid var(--color-border);
     border-radius: var(--border-radius-sm);
+    background-color: var(--color-surface-light);
+    color: var(--color-text);
     min-height: 100px;
     resize: vertical;
 }
 
 .form__file {
     padding: var(--spacing-sm);
-}
-
-.form__actions {
-    display: flex;
-    gap: var(--spacing-sm);
-    justify-content: flex-end;
-    margin-top: var(--spacing-md);
+    background-color: var(--color-surface-light);
+    border-radius: var(--border-radius-sm);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
 }
 
 /* Отзывы */
@@ -238,6 +230,7 @@ body {
 .reviews__title {
     font-size: var(--font-size-lg);
     margin-bottom: var(--spacing-md);
+    color: var(--color-text);
 }
 
 .reviews__list {
@@ -246,21 +239,43 @@ body {
     gap: var(--spacing-md);
 }
 
-/* Реклама */
-.advertisement {
-    padding: var(--spacing-md);
-    background-color: #f5f5f5;
+.review {
+    background-color: var(--color-surface-light);
     border-radius: var(--border-radius-md);
-    text-align: center;
-    color: var(--color-text-light);
+    padding: var(--spacing-md);
+    border: 1px solid var(--color-border);
 }
 
-/* Подвал */
-.footer {
-    padding: var(--spacing-md);
-    text-align: center;
-    color: var(--color-text-light);
-    border-top: 1px solid var(--color-border);
+.review__text {
+    color: var(--color-text);
+    margin-bottom: var(--spacing-md);
+}
+
+.review__photo {
+    width: 100%;
+    border-radius: var(--border-radius-sm);
+    margin-bottom: var(--spacing-md);
+}
+
+.review__meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--color-text-secondary);
+}
+
+.review__like-btn {
+    background: none;
+    border: none;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--border-radius-sm);
+    transition: background-color var(--transition-fast);
+}
+
+.review__like-btn:hover {
+    background-color: var(--color-surface);
 }
 
 /* Медиа запросы */
@@ -275,9 +290,9 @@ body {
         top: 64px;
         bottom: 0;
         width: 100%;
-        max-width: 300px;
+        max-width: 350px;
         transform: translateX(100%);
-        transition: transform var(--transition-normal);
+        transition: transform var(--transition-fast);
     }
 
     .sidebar.is-active {
