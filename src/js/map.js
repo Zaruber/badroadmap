@@ -16,10 +16,66 @@ class MapManager {
             maxZoom: MAP_CONFIG.maxZoom
         });
 
-        // Добавляем слой OpenStreetMap
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
+        // Добавляем стильную темную карту
+        L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+            maxZoom: 20,
+            attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
         }).addTo(this.map);
+
+        // Настраиваем стиль маркеров
+        const customIcon = L.divIcon({
+            className: 'custom-marker',
+            html: `<div class="marker-pin"></div>`,
+            iconSize: [30, 30],
+            iconAnchor: [15, 30]
+        });
+
+        // Добавляем стили для маркеров
+        const style = document.createElement('style');
+        style.textContent = `
+            .custom-marker {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .marker-pin {
+                width: 30px;
+                height: 30px;
+                border-radius: 50% 50% 50% 0;
+                background: var(--color-primary);
+                position: relative;
+                transform: rotate(-45deg);
+                animation: bounce 0.3s ease-out;
+            }
+            .marker-pin::after {
+                content: '';
+                width: 24px;
+                height: 24px;
+                margin: 3px 0 0 3px;
+                background: var(--color-surface);
+                position: absolute;
+                border-radius: 50%;
+            }
+            @keyframes bounce {
+                0% { transform: rotate(-45deg) translateY(-10px); }
+                100% { transform: rotate(-45deg) translateY(0); }
+            }
+            .leaflet-popup-content-wrapper {
+                background: var(--color-surface);
+                color: var(--color-text);
+                border-radius: var(--border-radius-md);
+                border: 1px solid var(--color-border);
+            }
+            .leaflet-popup-tip {
+                background: var(--color-surface);
+                border: 1px solid var(--color-border);
+            }
+            .leaflet-popup-content {
+                margin: var(--spacing-md);
+                font-family: var(--font-family);
+            }
+        `;
+        document.head.appendChild(style);
 
         // Добавляем обработчики событий
         this.addEventListeners();
@@ -79,7 +135,14 @@ class MapManager {
 
     // Добавление маркера на карту
     addMarker(id, lat, lng, text) {
-        const marker = L.marker([lat, lng])
+        const marker = L.marker([lat, lng], {
+            icon: L.divIcon({
+                className: 'custom-marker',
+                html: `<div class="marker-pin"></div>`,
+                iconSize: [30, 30],
+                iconAnchor: [15, 30]
+            })
+        })
             .bindPopup(text)
             .addTo(this.map);
         
